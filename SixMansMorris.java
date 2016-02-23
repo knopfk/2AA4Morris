@@ -26,6 +26,7 @@ public class SixMansMorris extends JFrame implements ActionListener
 	public static boolean isButtonTake;
 	public static boolean isButtonRecieve;
 
+
 	public SixMansMorris(String title){
 		super(title);
 		// Creates Panels for separate purposes
@@ -119,18 +120,21 @@ public class SixMansMorris extends JFrame implements ActionListener
 
 class PiecePanel extends JPanel {
 	
-	private Shape redCircle = new Ellipse2D.Double(100, 100, 100, 100);
-	private Shape blueCircle = new Ellipse2D.Double(575, 100, 100, 100);
-	private Shape testShop = new Ellipse2D.Double(350, 100, 100, 100);
+	private Ellipse2D.Double redCircle = new Ellipse2D.Double(100, 100, 100, 100);
+	private Ellipse2D.Double blueCircle = new Ellipse2D.Double(575, 100, 100, 100);
+	private Ellipse2D.Double testShop = new Ellipse2D.Double(350, 100, 100, 100);
 	
 	private boolean blueTake;
 	private boolean redTake;
-	private boolean isButtonRecieve;
+	public static boolean isButtonAdded;
+	public static boolean redAddedLast;
+	public static boolean blueAddedLast;
 	
 	public PiecePanel() {
 		
 		blueTake = false;
 		redTake = false;
+		isButtonAdded = false;
 		
 		addMouseListener(new MouseAdapter(){
 			@Override
@@ -148,14 +152,16 @@ class PiecePanel extends JPanel {
 					blueTake = true;
 				}
 				else if (testShop.contains(e.getPoint())){
+					//Piece p = new Piece(testShop.getX(), testShop.getY(), true);
+					//add(p);
+					
 					repaint();
-					System.out.println("RED ADDED");
-					redTake = false;
+					isButtonAdded = true;
 				}
 				else if (testShop.contains(e.getPoint())){
 					repaint();
 					System.out.println("BLUE ADDED");
-					blueTake = false;
+					
 				}
 			}
 		});
@@ -178,18 +184,36 @@ class PiecePanel extends JPanel {
 		g2d.draw(blueCircle);
 		g2d.fill(blueCircle);
 		
-		g2d.setColor(Color.BLACK);
-		g2d.draw(testShop);
+		
+		
+		if (isButtonAdded == false){
+			g2d.setColor(Color.BLACK);
+			g2d.draw(testShop);
+		}
 		
 		if (redTake){
 			g.setColor(Color.RED);
 			g.fillOval(350, 100, 100, 100);
+			redTake = false;
+			redAddedLast = true;
+			blueAddedLast = false;
 		}
 		if (blueTake){
 			g.setColor(Color.BLUE);
 			g.fillOval(350, 100, 100, 100);
+			blueTake = false;
+			blueAddedLast = true;
+			redAddedLast = false;
+			//isButtonAdded = true;
+		}
+		if (redAddedLast){
+			g.setColor(Color.RED);
+			g.fillOval(350, 100, 100, 100);
+		}
+		if (blueAddedLast){
+			g.setColor(Color.BLUE);
+			g.fillOval(350, 100, 100, 100);
 		}
 	}
-	
 }
 
