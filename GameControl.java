@@ -1,6 +1,9 @@
 import javax.swing.SwingUtilities;
 import java.util.Random;
 
+
+//class should inheriant from gamedisplay, to control its methods
+// or game display should use its methods ? create a new super class that uses both?
 public class GameControl {
 	
 	
@@ -13,7 +16,7 @@ public class GameControl {
 	int play2count = 0; //holds number of active pieces for player2
 	int allowable = 6; //holds number of pieces each player is allowed to have
 	boolean turn; //holds value determining which players turn it is
-	boolean first; //holds which player goes first
+	private boolean first; //holds which player goes first
 	
 	/* Game Control
 	 * - Contains main function and data for the game
@@ -36,7 +39,7 @@ public class GameControl {
 		return first; //return first player
 		}
 		
-	void newpiece(int l, int p, boolean teamnew) {//new piece moved to board - l and p are new position, t - team
+	public void newpiece(int l, int p, boolean teamnew) {//new piece moved to board - l and p are new position, t - team
 		current[l][p] = current[l][p] + 1; //add count to current board
 		
 		String s = teams[l][p]; //track what colour pieces are on board, stack;
@@ -51,7 +54,7 @@ public class GameControl {
 		
 	}
 
-	Error checkboard() { //check if board is legal
+	public Error checkboard() { //check if board is legal
 		Error error = new Error(); //set up instance of error class
 		int[][] errorarray = new int[levels][places]; //initialize array to hold error problems
 		int errorcase = 0; //initialize int variable to hold what kind of error occuring
@@ -87,7 +90,7 @@ public class GameControl {
 		}
 	
 	
-	int[][] visibleteam() { //returns int array of top piece of stack for each place on board
+	public int[][] visibleteam() { //returns int array of top piece of stack for each place on board
 		for (int i = 0; i < levels; i++) {
 			for (int j = 0; j < places; j++) {
 				String square = teams[i][j]; // for each position...
@@ -109,11 +112,15 @@ public class GameControl {
 		return visibleteams; //return list of top pieces
 	}
 		
-		public static void main(String args[]){
+	public static void main(String args[]){
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run(){
 					// Creates Frame for Game to Run in //
-					new GameDisplay();
+					GameDisplay gameDisplay = new GameDisplay();
+					//Set first player
+					Random random = new Random(); //initialize random
+					gameDisplay.setPlayer(random.nextInt()%2);
+					//gameDisplay.
 				}
 			});
 		}

@@ -21,12 +21,12 @@ class GameBoard extends JPanel {
 
 	private Shape[][] shapeArray = new Shape[2][8]; //array of the game pieces
 	
-	public int[][] visibleTeams = new int[2][8]; //array of the current state of each piece
+	private int[][] visibleTeams = new int[2][8]; //array of the current state of each piece
 	
 	Random rnd = new Random(); //random number generator
 	
-	public boolean redTake; //is red the active player
-	public boolean blueTake; //is blue the active player
+	private boolean redTake; //is red the active player
+	private boolean blueTake; //is blue the active player
 
 	
 	public int [][] sizingArray = new int[2][3]; //array to keep track of the size of the board in terms of Mans (3, 6, 9, etc), used for scaling
@@ -34,23 +34,20 @@ class GameBoard extends JPanel {
 	public double width = 500; //predetermined width, should receive from controller
 	public double size = 100; //predetermined size, should receive from controller
 	
+	public Shape[][] getShapeArray(){
+		return shapeArray;
+	}
+	
+	public void setVisibleTeams(int i, int j, int value){
+		visibleTeams[i][j] = value;
+	}
+	
 	/* GameBoard constructor
 	 * Builds and maintains the gameboard display
 	 * 
 	 */
 	public GameBoard() {
-		//temporary code to randomize the start, will be implemented properly in gameControl
-		if(rnd.nextInt() %2 == 0){
-			redTake = true;
-			blueTake = false;
-			System.out.println("Red Go First!");
-		}
-		else{
-			redTake = false;
-			blueTake = true;
-			System.out.println("Blue Go First!");
-		}
-		
+
 		//intialize the sizeArray for the gameboard to values that reflect 6 Man Morris
 		// other values would be able to be easily added if there was expansion to larger game boards
 		sizingArray[0][0] = 0;
@@ -81,31 +78,6 @@ class GameBoard extends JPanel {
 			shapeArray[i][7] = new Ellipse2D.Double(sizingArray[i][1]*(width/9), sizingArray[i][1]*(height/9),height/10, width/10);
 			
 		}
-		
-	
-	// Mouse Listener for mouse events
-	addMouseListener(new MouseAdapter(){
-		@Override
-		public void mouseClicked(MouseEvent e) { //if there was a mouse click
-			super.mouseClicked(e); //uses the super classes command
-			for(int i = 0; i < 2; i ++){ //for each disk on the board
-				for(int j = 0; j < 8; j++){
-					if(shapeArray[i][j].contains(e.getPoint()) && blueTake == true){ //if the piece was clicked and it is blue's turn
-						visibleTeams[i][j] = 2; //change the value in the color array
-						blueTake = false; //it is no longer blue's turn 
-						redTake = true; //it is now red's turn
-					}
-					else if(shapeArray[i][j].contains(e.getPoint()) && redTake == true){//if the piece was clicked and it is red's turn
-						visibleTeams[i][j] = 1; //change the value in the color array
-						blueTake = true; // it is no longer red's turn
-						redTake = false; // it is blue's turn
-					}
-				}
-			}
-			repaint(); //repaint the board
-		}
-		
-	});
 	}
 	@Override
 	protected void paintComponent(Graphics g){ //define the rules for drawing the board to the window

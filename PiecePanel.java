@@ -23,10 +23,18 @@ class PiecePanel extends JPanel {
 	
 	private boolean blueTake;
 	private boolean redTake;
-	public static boolean isButtonAdded;
-	public static boolean redAddedLast;
-	public static boolean blueAddedLast;
+	private static boolean isButtonAdded;
+	private static boolean redAddedLast;
+	private static boolean blueAddedLast;
 
+	public Shape getRedCircle(){
+		return redCircle;
+	}
+	
+	public Shape getBlueCircle(){
+		return blueCircle;
+	}
+	
 	/**
 	 * Constructor for PiecePanel class
 	 * 
@@ -36,38 +44,6 @@ class PiecePanel extends JPanel {
 		blueTake = false; //sets initial value of blueTake to false
 		redTake = false; //sets initial value of redTake to false
 		isButtonAdded = false; //sets initial value of isButtonAdded to false
-		
-		addMouseListener(new MouseAdapter(){ //add a mouse listener
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				super.mouseClicked(e);
-				
-				//if red is selected, make red active
-				if (redCircle.contains(e.getPoint())){ 
-					blueTake = false;
-					System.out.println("add red?");
-					redTake = true;
-				}
-				//if blue is selected, make blue active
-				else if (blueCircle.contains(e.getPoint())){
-					redTake = false;
-					System.out.println("add blue?");
-					blueTake = true;
-				}
-				// if test space is selected, color it
-				else if (testShop.contains(e.getPoint())){
-					//Piece p = new Piece(testShop.getX(), testShop.getY(), true);
-					//add(p);
-					
-					repaint();
-					isButtonAdded = true;
-				}
-				else if (testShop.contains(e.getPoint())){
-					repaint();
-					
-				}
-			}
-		});
 	}
 //	@Override
 //	public void paint(Graphics g){
@@ -93,13 +69,13 @@ class PiecePanel extends JPanel {
 		g2d.fill(blueCircle);
 
 		
-		g2d.setColor(Color.BLACK);
-		g2d.draw(testShop);
+		//g2d.setColor(Color.BLACK);
+	//	g2d.draw(testShop);
 			
 		// if it is has not been added, set it back to black
 		if (isButtonAdded == false){
-			g2d.setColor(Color.BLACK);
-			g2d.draw(testShop);
+		//	g2d.setColor(Color.BLACK);
+		//	g2d.draw(testShop);
 		}
 		
 		//if a color has been selected, change the middle circle to that color
