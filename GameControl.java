@@ -118,9 +118,9 @@ public class GameControl {
 					// Creates Frame for Game to Run in //
 					GameDisplay gameDisplay = new GameDisplay();
 					//Set first player
-					Random random = new Random(); //initialize random
-					gameDisplay.setPlayer(random.nextInt()%2);
-					//gameDisplay.
+					//Random random = new Random(); //initialize random
+					//gameDisplay.setPlayer(random.nextInt()%2);
+					
 				}
 			});
 		}

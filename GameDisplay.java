@@ -20,10 +20,10 @@ public class GameDisplay extends JFrame implements ActionListener {
 	private static boolean isButtonCheck; //boolean to check a button
 	private static boolean isButtonNewGame; // boolean to see if there is a new game
 	public static boolean isButtonTake; // boolean to see if a button is selected
-	public static boolean isButtonRecieve; //boolean to see if a button is recieved
+	public static boolean isButtonRecieve; //boolean to see if a button is received
 
 	//private Shape[][] shapeArray = new Shape[2][8]; //array of the game pieces
-	private int[][] visibleTeams = new int[2][8]; //array of the current state of each piece
+	//private int[][] visibleTeams = new int[2][8]; //array of the current state of each piece
 	
 	Random rnd = new Random(); //random number generator
 	
@@ -31,7 +31,7 @@ public class GameDisplay extends JFrame implements ActionListener {
 	private boolean blueTake; //is blue the active player
 	
 	private PiecePanel piecePanel;
-	private static GameBoard gamePanel;
+	public static GameBoard gamePanel;
 	
 	int play1count = 0; //holds number of active pieces for player1
 	int play2count = 0; //holds number of active pieces for player2
@@ -40,6 +40,10 @@ public class GameDisplay extends JFrame implements ActionListener {
 	int levels = 2; //holds number of levels on board 
 	int places = 8; //holds number of places in each level 
 	int[][] current; //array which will hold number of pieces in each position
+	
+	private int currentState;
+	private int [] prevDisk = new int[2];
+	
 	
 	/**
 	 * GameDisplay - the main class for controlling the other display classes
@@ -104,33 +108,113 @@ public class GameDisplay extends JFrame implements ActionListener {
 		gc1.gridx = 0;
 		gc1.gridy = 1;
 		buttonPanel.add(buttonNewGame, gc1);
-		//add mouse listener to panels
-		redTake = true; //for testing
-		blueTake = false; //for testing
+		//add mouse listener to panels	
+		state0();
 		gamePanel.addMouseListener(new MouseAdapter(){
 			public void mouseClicked(MouseEvent e) { //if there was a mouse click
 				super.mouseClicked(e); //uses the super classes command
-				System.out.println("I'm here");
+				//System.out.println("I'm here");
+				if(currentState == 1){
 				for(int i = 0; i < 2; i ++){ //for each disk on the board
 					for(int j = 0; j < 8; j++){
 						if(gamePanel.getShapeArray()[i][j].contains(e.getPoint()) && blueTake == true){ //if the piece was clicked and it is blue's turn
 							System.out.println("Picked Blue");
 							gamePanel.setVisibleTeams(i,j,2); //change the value in the color array
 							current[i][j] ++;
-							//blueTake = false; //it is no longer blue's turn 
-							//redTake = true; //it is now red's turn
+							blueTake = false; //it is no longer blue's turn 
+							redTake = true; //it is now red's turn
+							play1count ++;
+							state1();
 						}
 						else if(gamePanel.getShapeArray()[i][j].contains(e.getPoint()) && redTake == true){//if the piece was clicked and it is red's turn
 							System.out.println("Picked Red");
 							gamePanel.setVisibleTeams(i,j,1); //change the value in the color array
 							current[i][j] ++;
-							//blueTake = true; // it is no longer red's turn
-							//redTake = false; // it is blue's turn
+							blueTake = true; // it is no longer red's turn
+							redTake = false; // it is blue's turn
+							play2count ++;
+							state1();
 						}
 					}
 				}
 				gamePanel.repaint(); //repaint the board
-			}	
+			}
+			if(currentState ==2){
+				//System.out.println("I'm here");
+				for(int i = 0; i < 2; i ++){ //for each disk on the board
+					for(int j = 0; j < 8; j++){
+						if(gamePanel.getShapeArray()[i][j].contains(e.getPoint()) && blueTake == true){ //if the piece was clicked and it is blue's turn	
+							if(gamePanel.getVisibleTeams(i,j) == 1 && prevDisk[0] == -1){
+								prevDisk[0] = i; prevDisk[1] = j;
+							}
+							else if(gamePanel.getVisibleTeams(i,j) == 0 && prevDisk[0] != -1){
+								gamePanel.setVisibleTeams(i, j, 1);
+								gamePanel.setVisibleTeams(prevDisk[0], prevDisk[1], 0);
+								prevDisk[0] = -1;
+								prevDisk[1] = -1;
+								if(checkMill(i,j,1)){
+									//state3(2);
+									currentState = 3;
+								}
+								else{
+									blueTake = false; // it is no longer blues's turn
+									redTake = true; // it is red's turn
+								}
+							}
+						}
+						else if(gamePanel.getShapeArray()[i][j].contains(e.getPoint()) && redTake == true){//if the piece was clicked and it is red's turn
+							if(gamePanel.getVisibleTeams(i,j) == 2 && prevDisk[0] == -1){
+								prevDisk[0] = i; prevDisk[1] = j;
+							}
+							else if(gamePanel.getVisibleTeams(i,j) == 0 && prevDisk[0] != -1){
+								gamePanel.setVisibleTeams(i, j, 2);
+								gamePanel.setVisibleTeams(prevDisk[0], prevDisk[1], 0);
+								prevDisk[0] = -1;
+								prevDisk[1] = -1;
+								if(checkMill(i,j,2)){
+									//state3(2);
+									currentState = 3;
+								}
+								else{
+									blueTake = true; // it is no longer red's turn
+									redTake = false; // it is blue's turn
+								}
+							}
+						}
+					}
+				}
+				gamePanel.repaint(); //repaint the board
+				state2();
+			}
+			if(currentState ==3){
+				//System.out.println("I'm here");
+				for(int i = 0; i < 2; i ++){ //for each disk on the board
+					for(int j = 0; j < 8; j++){
+						if(gamePanel.getShapeArray()[i][j].contains(e.getPoint()) && blueTake == true){ //if the piece was clicked and it is blue's turn	
+							if(gamePanel.getVisibleTeams(i,j) == 2 && prevDisk[0] == -1){
+								gamePanel.setVisibleTeams(i,j,0);
+								play1count--;
+								blueTake = false; // it is no longer blues's turn
+								redTake = true; // it is red's turn
+								currentState = 2;
+							}
+						}
+						else if(gamePanel.getShapeArray()[i][j].contains(e.getPoint()) && redTake == true){//if the piece was clicked and it is red's turn
+							if(gamePanel.getVisibleTeams(i,j) == 1 && prevDisk[0] == -1){
+								gamePanel.setVisibleTeams(i,j,0);
+								play2count--;
+								blueTake = true; // it is no longer blues's turn
+								redTake = false; // it is red's turn
+								currentState = 2;
+							}
+						}
+					}
+				}
+				gamePanel.repaint(); //repaint the board
+			}
+				
+			}		
+			
 		});
 		
 		piecePanel.addMouseListener(new MouseAdapter(){ //add a mouse listener
@@ -155,6 +239,58 @@ public class GameDisplay extends JFrame implements ActionListener {
 	});
 	}
 
+	//state 0: initial set up
+	public void state0(){
+		//set initial piece amounts
+		this.play1count =0;
+		this.play2count = 0;
+		//randomly determine first player
+		Random random = new Random(); //initialize random
+		if(random.nextBoolean() == true){
+			redTake = true;
+			blueTake = false;
+		}
+		else{
+			blueTake = true;
+			redTake = false;
+		}
+		// set board to blank initially
+		this.clearBoard();
+		
+		//move to next state
+		this.currentState = 1;
+		//System.out.println("I got to state 1");
+		
+	}
+	//state 1: placing pieces
+	public void state1(){
+		if(play1count == 6 && play2count == 6){
+			currentState  = 2;
+			prevDisk[0] = -1;
+			prevDisk[1] = -1;
+		}
+	}
+	//state 2: moving pieces
+	public void state2(){
+		//if player piece count drops below necessary, or another condition is met, move to state 3
+		if(play1count < 3){
+			System.out.println("Red Wins");
+			currentState = 4;
+		}
+		else if(play2count < 3){
+			System.out.println("Blue Wins");
+			currentState = 4;
+		}
+	}
+	//state 3: Milling
+	public void state3(int state){
+
+	}
+	//state 4: we have a winner
+	public void state4(){
+		
+	}
+	
 	/**
 	 * Default constructor for GameDisplay
 	 */
@@ -177,19 +313,20 @@ public class GameDisplay extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// check if check button was pressed
 		if ("Check".equals(e.getActionCommand())){
-			isButtonCheck = true;
-			System.out.println("Is it correct?");
-			isButtonTake = false;
-			Error temp = this.checkboard();
+		//	isButtonCheck = true;
+			//System.out.println("Is it correct?");
+			//isButtonTake = false;
+		//	Error temp = this.checkboard();
 			//How to output Error?
-			if(temp != null){
-				System.out.println(temp.geterrortype());
-			}
+		//	if(temp != null){
+		///		System.out.println(temp.geterrortype());
+		//	}
 			
 		}
 		// checks if new game was pressed
 		else if ("New Game".equals(e.getActionCommand())){
 			this.clearBoard();
+			state0();
 		}
 		// adds a piece to a space
 		else if ("take".equals(e.getActionCommand())){
@@ -218,40 +355,6 @@ public class GameDisplay extends JFrame implements ActionListener {
 			blueTake = true;
 		}
 	}
-	//need to move error checker
-	public Error checkboard() { //check if board is legal
-		Error error = new Error(); //set up instance of error class
-		int[][] errorarray = new int[levels][places]; //initialize array to hold error problems
-		int errorcase = 0; //initialize int variable to hold what kind of error occuring
-		int whichteam = 0;
-		
-		for (int i = 0; i < levels; i++) {//test each place on board
-			for (int j = 0; j < places; j++) {
-				if (current[i][j] <= 1) {
-					continue; //if count less than or equal to 1, checkout remains true
-				}
-				else {
-					errorarray[i][j] = 1;//set 1, represents error in that location
-					errorcase = 1;//set 1, represents stack error
-				}
-			}
-		}
-		
-		if ((play1count > allowable) || (play2count > allowable)) { //determine if either player has too many pieces active
-			if (play1count > allowable) {
-				whichteam = 1; //player 1 has too many pieces
-			}
-			else {
-				whichteam = 2; //player 2 has 2 many pieces
-			}
-			errorcase = errorcase + 2; //one of the players has too many pieces
-		}
-		//if errorcase is not 0, there is error present
-		error.seterrortype(errorcase); // errorcase = 0 - no error, errorcase = 1 - stacked, errorcase = 2 - too many pieces on board, 3 = both kinds of error
-		error.seterrorarray(errorarray); //1 represents error location on board
-		error.setteamerror(whichteam); //0 - neither player, 1 - player 1, 2 - player 2
-		return error; //return error instance
-	}
 	
 	//method to clear board
 	public void clearBoard(){
@@ -266,5 +369,33 @@ public class GameDisplay extends JFrame implements ActionListener {
 			}
 		}
 		gamePanel.repaint();
+	}
+	//method to see if you have a mill
+	public boolean checkMill(int i,int j,int colour){ //make return a boolean, if true move to milling state
+		if(j == 0 || j == 1 || j == 2){
+			if(gamePanel.getVisibleTeams(i,0) == colour && gamePanel.getVisibleTeams(i,1) == colour && gamePanel.getVisibleTeams(i,2) == colour){
+				//System.out.println("MILL FOUND");
+				return true;
+			}
+		}
+		if(j == 5 || j == 6 || j == 7){
+			if(gamePanel.getVisibleTeams(i,5) == colour && gamePanel.getVisibleTeams(i,6) == colour && gamePanel.getVisibleTeams(i,7) == colour){
+				//System.out.println("MILL FOUND");
+				return true;
+			}
+		}
+		if(j == 0 || j == 3 || j == 5){
+			if(gamePanel.getVisibleTeams(i,0) == colour && gamePanel.getVisibleTeams(i,3) == colour && gamePanel.getVisibleTeams(i,5) == colour){
+				//System.out.println("MILL FOUND");
+				return true;
+			}
+		}
+		if(j == 2 || j == 4 || j == 7){
+			if(gamePanel.getVisibleTeams(i,0) == colour && gamePanel.getVisibleTeams(i,3) == colour && gamePanel.getVisibleTeams(i,5) == colour){
+				//System.out.println("MILL FOUND");
+				return true;
+			}
+		}
+		return false;
 	}
 }

@@ -42,6 +42,10 @@ class GameBoard extends JPanel {
 		visibleTeams[i][j] = value;
 	}
 	
+	public int getVisibleTeams(int i, int j){
+		return visibleTeams[i][j];
+	}
+	
 	/* GameBoard constructor
 	 * Builds and maintains the gameboard display
 	 * 
