@@ -7,7 +7,7 @@
 %\pagestyle{empty}
 
 \begin{document}
-	\title{6 Man's Morris: 2AA4/2ME3 Assignment 1} %add title here
+	\title{6 Man's Morris: 2AA4/2ME3 Assignment 2} %add title here
 	\author{
 		Gregory Smilski, 1404091\\
 		Abigail Gaulin, 1327924\\
@@ -16,6 +16,8 @@
 	
 	\maketitle
 	\thispagestyle{empty}
+	\newpage
+	\tableofcontents
 	\newpage
 	
 	\section{Introduction}
@@ -66,66 +68,218 @@
 	\newpage
 	\section{Module Guide}
 	%4.2 For each module, a description of the interface and behaviors of each method
+	\subsection{MIS}
+
 	\begin{itemize}
-		   \item GameControl: Controls the game logic.
-		   \begin{itemize}
-		   	\item startboard: Initializes an instance of the board class. Initializes the arrays used to hold how many pieces in each position, and which players those pieces belong to. Additionally returns boolean value determining which player has the first turn.
-		   	\item newpiece: Add a piece to the "current" and "teams" arrays in the given location.
-		   	\item checkboard: Determines whether or not current board set-up is legal. Checks for stack errors (more than one peice on each ), or if a player has too many pieces on the board.
-		   	\item visibleteam: Returns an int[][] of the top pieces of each position of the current board set-up.
-		   	\item main: Runs program.
-		   \end{itemize}
-		   \item Error: A class to hold the variables of the checkerror output.
-		   \begin{itemize}
-		   	\item seterrortype: Sets the errortype variable to indicate the type of error present.
-		   	\item seterrorarray: Sets the errorarray variable to indicate which positions a stack error is occuring at.
-		   	\item setteamerror: Sets the teamerror variable to indicate which player has too many pieces on the board.
-		   \end{itemize}
-		   
-		\item GameBoard : a class to hold the command that display the gameboard to the application window. 
+		\item GameDisplay.java \\
+		This module creates the Game Displayed to the window of the game. It controls the logic of the game, and calls other classes to generate the game board. \\
+		\underline{Interface} \\
+		\underline{Uses}
+		\begin{itemize}
+			\item Gameboard.java
+			\item PiecePanel.java
+			\item java.awt.*
+			\item javax.swing.*
+			\item javax.swing.border.*
+			\item java.awt.event.ActionEvent
+			\item java.awt.event.ActionListener
+			\item java.awt.event.MouseAdapter
+			\item java.awt.event.MouseEvent
+			\item java.io.*
+			\item java.io.PrintWriter
+			\item java.util.Random
+		\end{itemize} 
+		\underline{Return Type}
+		\begin{itemize}
+			\item None
+		\end{itemize}
+		\underline{Access Programs}
+		\begin{itemize}
+			\item public GameDisplay(String title) : A constructor for the GameDisplay class. Creates an GameDisplay object with a title, that is specified by String title. This method is necessary to allow other classes to create a game display, and run the program.
+			\item public GameDisplay() :Creates an GameDisplay object, using the default settings and title. Calls the public method GameDisplay(String title) to create an instance of the Game Dispaly class.
+			\item public void actionPerformed(ActionEvent e): A public method that overrides the more general actionPerformed. This method specifies the actions taken when the buttons in the button panel are used.
+		\end{itemize}
+		\item GameBoard.java \\
+		This module contains the data and specifications for displaying the 6 man's morris board to the window. It is used by Game Display to create the full game board. \\
+		\underline{Interface} \\
+		\underline{Uses}
+		\begin{itemize}
+			\item java.awt.Color;
+			\item java.awt.Graphics;
+			\item java.awt.Graphics2D;
+			\item java.awt.Shape; 
+			\item java.awt.geom.Ellipse2D;
+			\item java.awt.geom.Line2D;
+			\item java.awt.geom.Rectangle2D;
+			\item java.util.Random;
+			\item javax.swing.JPanel;
+		\end{itemize} 
+		\underline{Return Type}
+		\begin{itemize}
+			\item None
+		\end{itemize}
+		\underline{Access Programs}
+		\begin{itemize}
+			\item public Shape[][] getShapeArray() : A public method to allow other class to access the values of the shapeArray 2D array. This allows other class to see the shape of each element on the board.
+			\item public void setVisibleTeams(int i, int j, int value) : A public method to allow other classes the ability to change the values of the  visibleTeams array. This allows another class to change which player controls that space (has a piece on that space).
+			\item public int getVisibleTeams(int i, int j) : A public method that allows another class to get the value of the visibleTeams array at a specified i and j value. This allows another class to see which player has a piece on that space, if any.
+			\item public GameBoard() : A public constructor for the class. This allows another class to be able to create a GameBoard panel for the general display.
+
+		\end{itemize}
+			\item PiecePanel.java \\
+			This module contains the data and specifications for displaying the piece panel and messages to the window. It is used by Game Display to create the full game board. \\
+			\underline{Interface} \\
+			\underline{Uses}
 			\begin{itemize}
-			\item public int[][] visibleTeams: storage for the state of each game piece
-			\item public boolean redTake: represents if red is the active player
-			\item public boolean blueTake: represents if blue is the active player
-			\item public int[][] sizingArray: represents the sizes of each level of game (inner or outer), used for scaling
-			\item public double height: predetermined height of window
-			\item public double width: predeteremined width of window
-			\item public double size: predetermined size of window
-			\item public GameBoard: default constructor for the gameboard.
+				\item java.awt.Color;
+				\item java.awt.Graphics;
+				\item java.awt.Graphics2D;
+				\item java.awt.Shape; 
+				\item java.awt.geom.Ellipse2D;
+				\item javax.swing.JPanel;
+				\item javax.swing.JLabel;
+			\end{itemize} 
+			\underline{Return Type}
+			\begin{itemize}
+				\item None
 			\end{itemize}
-	\item PiecePanel(): It creates two interactive coloured circles where each player can draw their team's pieces from. When interacted with, it runs through a series of gates that which allow only certain players to add a piece.
-	\item Piece() The constructor for piece object. Pieces should be added to the board during set up.
-				\item GameDisplay(): The default constructor for the class GameDisplay, creates the panel and puts it into its place in the JFrame.
-				\item GameDisplay(String): Creates a panel with two buttons that when pressed will either, depending on the button press, check if the positioning of pieces is legal or start a new game
-				\begin{itemize}
-					\item isButtonTake: A boolean to see if a button is selected
-					\item isButtonRecieve: A boolean to see if a button is recieved
-					
-				\end{itemize}
+			\underline{Access Programs}
+			\begin{itemize}
+				\item public Shape getRedCircle() : returns the value of RedCircle.
+				\item public Shape getBlueCircle() : returns the value of BlueCircle.
+				\item public void setLabel(String newText) : Allows another class to set the String message to be displayed to the screen.
+				\item public void setRedCount(String newText) : Allows another class to set the amount of remaining red disks to be placed.
+				\item public void setBlueCount(String newText) : Allows another class to set the amount of remaining blue disks to be placed.
+				\item public PiecePanel() : A constructor that allows another class to create an instance of the PiecePanel class.
+				
+			\end{itemize}
+	\end{itemize}
+		
+	\subsection{MID}
+	\begin{itemize}
+		\item GameDisplay.java \\
+		\underline{Variables}
+		\begin{itemize}
+			\item private static boolean isButtonNewGame : A boolean to show keep track if this is a new game.
+			\item private static boolean isButtonTake : A boolean to show if a button is selected.
+			\item private static boolean isButtonRecieve : A boolean to show if a button is received
+			\item private boolean redTake : A boolean to show if it is Red's turn.
+			\item private boolean blueTake : A boolean to show if it is Blue's turn.
+			\item private PiecePanel piecePanel : A PiecePanel class to represent the pieces panel section of the display.
+			\item private static GameBoard gamePanel : A GameBoard class to represent the game board section of the display.
+			\item private int play1count : An integer variable representing the amount of pieces Red has left to play.
+			\item private int play2count : An integer variable representing the amount of pieces Blue has left to play.
+			\item private int levels : An integer representing the amount of levels in the game. For 6 Man's Morris this is 2.
+			\item private int places : An integer representing the amount of places in one level of the board. For 6 Man's Morris this is 8.
+			\item private int[][] current : A 2D integer array representing the amount of pieces currently on a space of the board. Should only allow one piece on each space
+			\item private int currentState : An integer variable representing the current state of the game. Should only be between 0 and 4.
+			\item private int previousState :An integer variable representing the previous state of the game. Should only be between 0 and 4.
+			\item private int [] prevDisk : A 1D integer array representing the location of the piece that will be moved.
+		\end{itemize}
+		\underline{Access Programs}
+		\begin{itemize}
+			\item public GameDisplay(String title): A constructor for the GameDisplay, that takes a String for the title of the game.
+			\item public GameDisplay() : A generic constructor for the Game Display, calls GameDisplay(String title) to construct the game display.
+			\item public void actionPerformed(ActionEvent e) : A public method representing the actions taken when a button is pressed on the board.
+		\end{itemize}
+		\underline{Private Programs}
+		\begin{itemize}
+			\item private void state0() : A private method to be called when the game transitions to the first state (intial state).
+			\item private void state1() :A private method to be called when the game transitions to the second state (piece placing).
+			\item private void state2() :A private method to be called when the game transitions to the third state (piece moving).
+			\item private void state3() :A private method to be called when the game transitions to the fourth state (milling).
+			\item private void clearBoard() : A private method that is called that restarts the board, and returns to state0. 
+			\item private boolean checkMill(int i,int j,int colour): A private method that checks if a mill has been achieved, returns a boolean showing if there is a mill.
+			\item private void saveGame() : A private method that records the game data to a .txt file, so that it may be recovered later.
+			\item private void loadGame() : A private method that load the game data from a .txt file.		
+		\end{itemize}
+		\item GameBoard.java \\
+		\underline{Variables}
+		\begin{itemize}
+			\item private Shape[][] shapeArray : A 2D Shape array containing the shapes at each of the nodes on the game board. 
+			\item private int[][] visibleTeams : A 2D integer array containing the values for the currrent controllers of a node on the gameboard (0-empty,1-red,2-blue).
+			\item private int [][] sizingArray :A 2D integer array containing the values of the sizes of nodes on the game board. Keeps track of the scaling of each level.
+			\item private double height : A private integer variable representing the height of the gameboard.
+			\item private double width : A private integer variable representing the width of the game board.
+		\end{itemize}
+		\underline{Access Programs}
+		\begin{itemize}
+			\item public Shape[][] getShapeArray() : A public method allowing another class access to the values of the shapeArray variable array. Allows another class to see the shapes of each element on the game board.
+			\item public void setVisibleTeams(int i, int j, int value) : A public method taking 3 integer inputs: i, the level; j, the position; and value, the value. This method the ith,jth element of the visible teams array to the value of value. Allows another class to change the elements of visibleTeams.
+			\item public int getVisibleTeams(int i, int j) : A public method taking 2 integer inputs: i,the level; and j: the position. Returns the value of visibleTeams at the [i][j] position. Allows other classes to read the values of the visibleTeams array.
+			\item public GameBoard() : A public constructor method that allows another class to create an instance of the GameBoard class.
+			
+		\end{itemize}
+		\underline{Private Programs}
+		\begin{itemize}
+			\item protected void paintComponent(Graphics g) : An overrided method to describe how each element of game board will be coloured. 
+	
+		\end{itemize}
+		
+		\item PiecePanel.java \\
+		\underline{Variables}
+		\begin{itemize}
+			\item private Shape redCircle : A private shape variable representing the shape of the red disk to be placed.
+			\item private Shape blueCircle:A private shape variable representing the shape of the blue disk to be placed.
+			\item private boolean blueTake: A private boolean variable representing if it is currently blue's turn.
+			\item private boolean redTake:A private boolean variable representing if it is currently red's turn.
+			\item private static boolean isButtonAdded:A private boolean representing if a button is to be added.
+			\item private static boolean redAddedLast: A private boolean representing if red was added last.
+			\item private static boolean blueAddedLast: A private boolean representing if blue was added last.
+			\item private JLabel label1: A Jlabel that contains the message to be displayed to the screen.
+			\item private JLabel label2: A Jlabel that contains the amount of red pieces remaining to be placed.
+			\item private JLabel label3: A Jlabel that contains the amount of blue pieces remaining to be placed.
+		\end{itemize}
+		\underline{Access Programs}
+		\begin{itemize}
+				\item public Shape getRedCircle() : returns the value of RedCircle.
+				\item public Shape getBlueCircle() : returns the value of BlueCircle.
+				\item public void setLabel(String newText) : Allows another class to set the String message to be displayed to the screen.
+				\item public void setRedCount(String newText) : Allows another class to set the amount of remaining red disks to be placed.
+				\item public void setBlueCount(String newText) : Allows another class to set the amount of remaining blue disks to be placed.
+				\item public PiecePanel() : A constructor that allows another class to create an instance of the PiecePanel class.
+		\end{itemize}
+		\underline{Private Programs}
+		\begin{itemize}
+			\item protected void paintComponent(Graphics g) : An overrided method to describe how each element of piece panel will be coloured. 
+			
+		\end{itemize}		
 	\end{itemize}
 	\section{Traceability}
 	% 4.5 A Description of each class
 	% Tablular Expressions
 	\begin{tabularx}{\linewidth}{|C|C|C|}
+		\hline \\
 		Requirement & Module & Result \\
 		\hline \\
 		Random Player selected to go First & GameControl & random boolean generated to represent either player 1 or player 2 \\
+		\hline \\
 		Setting up Board Array & GameControl & int[][] generated to hold values at each position on array. Initially, the array is empty, representing no disks on board. \\
+		\hline \\
 		Checking if Board is Legal & GameControl & If there is more than one piece in a position, or too many pieces for a player on the board, an Error type is returned which holds value representing legality/error types present on board. \\
+		\hline \\
 		Displaying an array as a Six Men's Morris Board &
 		GameBoard & Game is Displayed as a panel on a jFrame, allows for user interaction \\ 
+		\hline \\
 		Allowing the user to place a piece & GameBoard &
 		User is able to select a location and place a piece \\
-		The pieces used in the game are red and blue & GameBoard & The gameboard draws the pieces and restricts their colors to red and blue \\
-		Starting with an empty board displayed & GameBoard & All of the spaces are initial empty (black) on the gameboard. \\
+		
+		\hline \\
 	\end{tabularx}
 		\begin{tabularx}{\linewidth}{|C|C|C|}
+			\hline \\
+			The pieces used in the game are red and blue & GameBoard & The gameboard draws the pieces and restricts their colors to red and blue \\
+			\hline \\
 			Requirement & Module & Result \\
 			\hline \\
-			
+			Starting with an empty board displayed & GameBoard & All of the spaces are initial empty (black) on the gameboard. \\
+			\hline \\
 			New Game Button & GameDisplay & Allows user to select option to restart the board, will call GameControl. \\
+			\hline \\
 			Check Button & GameDisplay  & Allows user to check if current board is legal, will call GameControl. \\
+			\hline \\
 			User-Game Interaction & GameDisplay &Allows user to interact with game peices, make modifications to current board, will call GameControl. \\
+			\hline \\
 	\end{tabularx}
 	
 	\section{Uses Relation}
@@ -146,6 +300,7 @@
 				
 				\end{tikzpicture}
 			\end{figure}
+	In the above relation, a class points to another that it uses.
 	The View calls the Controller, which in turn modifies the Model. In the future, the View will initially take input from the user. Then, depending on which component was clicked, will call a corresponding method in the controller. Clicking either the red or blue piece will call the newpiece method in GameControl. Clicking the check button will call checkboard(), and clicking the start button will call startboard(). These methods will then modify the model through the manipulation of arrays. \\
 	\newpage	
 	\section{Testing}

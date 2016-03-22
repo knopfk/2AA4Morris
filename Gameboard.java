@@ -2,8 +2,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Shape;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.awt.geom.Rectangle2D;
@@ -23,16 +21,16 @@ class GameBoard extends JPanel {
 	
 	private int[][] visibleTeams = new int[2][8]; //array of the current state of each piece
 	
-	Random rnd = new Random(); //random number generator
+	//private Random rnd = new Random(); //random number generator
 	
-	private boolean redTake; //is red the active player
-	private boolean blueTake; //is blue the active player
+	//private boolean redTake; //is red the active player
+	//private boolean blueTake; //is blue the active player
 
 	
-	public int [][] sizingArray = new int[2][3]; //array to keep track of the size of the board in terms of Mans (3, 6, 9, etc), used for scaling
-	public double height = 500; //predetermined height, should receive from controller
-	public double width = 500; //predetermined width, should receive from controller
-	public double size = 100; //predetermined size, should receive from controller
+	private int [][] sizingArray = new int[2][3]; //array to keep track of the size of the board in terms of Mans (3, 6, 9, etc), used for scaling
+	private double height = 500; //predetermined height, should receive from controller
+	private double width = 500; //predetermined width, should receive from controller
+	//private double size = 100; //predetermined size, should receive from controller
 	
 	public Shape[][] getShapeArray(){
 		return shapeArray;
