@@ -7,15 +7,15 @@ import java.util.Random;
 public class GameControl {
 	
 	
-	int levels = 2; //holds number of levels on board 
-	int places = 8; //holds number of places in each level 
-	int[][] current; //array which will hold number of pieces in each position
-	String[][] teams; //array which will hold stack of players in each position
-	int[][] visibleteams; //array which holds top piece in each position 
-	int play1count = 0; //holds number of active pieces for player1
-	int play2count = 0; //holds number of active pieces for player2
-	int allowable = 6; //holds number of pieces each player is allowed to have
-	boolean turn; //holds value determining which players turn it is
+	private int levels = 2; //holds number of levels on board 
+	private int places = 8; //holds number of places in each level 
+	private int[][] current; //array which will hold number of pieces in each position
+	private String[][] teams; //array which will hold stack of players in each position
+	private int[][] visibleteams; //array which holds top piece in each position 
+	private int play1count = 0; //holds number of active pieces for player1
+	private int play2count = 0; //holds number of active pieces for player2
+	private int allowable = 6; //holds number of pieces each player is allowed to have
+	private boolean turn; //holds value determining which players turn it is
 	private boolean first; //holds which player goes first
 	
 	/* Game Control
@@ -54,7 +54,7 @@ public class GameControl {
 		
 	}
 
-	public Error checkboard() { //check if board is legal
+	/*public Error checkboard() { //check if board is legal
 		Error error = new Error(); //set up instance of error class
 		int[][] errorarray = new int[levels][places]; //initialize array to hold error problems
 		int errorcase = 0; //initialize int variable to hold what kind of error occuring
@@ -87,7 +87,7 @@ public class GameControl {
 		error.seterrorarray(errorarray); //1 represents error location on board
 		error.setteamerror(whichteam); //0 - neither player, 1 - player 1, 2 - player 2
 		return error; //return error instance
-		}
+		}*/
 	
 	
 	public int[][] visibleteam() { //returns int array of top piece of stack for each place on board
@@ -111,7 +111,76 @@ public class GameControl {
 		}
 		return visibleteams; //return list of top pieces
 	}
+	
+	public static Boardreturn movepiece(int ol,int op,int nl,int np, int[][] visibleteams) {//move pre-existing piece 
+		 
+		Boardreturn mpreturn = new Boardreturn(); //set up boardreturn object
+		int mcheck; //holds whether move is legal 
+		int levels = visibleteams.length;
+		int places = visibleteams[0].length;
 		
+		int[][] okaymove = new int[levels][places]; //array for holding legal moves
+		
+		for (int t = 0; t < levels; t++) { //for each position, set default to 0
+			for (int p = 0; p < places; p++) {
+				okaymove[t][p] = 0;
+			}
+		
+		
+		for (int m = 0; m < levels; m++) { //for each place/level....
+			for (int o = 0; o < places; o++) {
+				if (((o == (op-1)) || (o == (op + 1))) && (m == ol)) { //the places next on the same level are okay
+					okaymove[m][o] = 1; //
+					
+					if (op == 0) { //also if it in place 0, place 7 is okay
+						//System.out.println();
+						//System.out.println(op);
+						okaymove[m][7] = 1; 
+					}
+					else if (op == 7) { //if in place 7, place 0 is okay
+						okaymove[m][0] = 1;
+					}
+					
+				}
+				else if ((op % 2 != 0) && (o == op) && (o != 0)) { //if the place number is not divisible by 2..
+					for (int a = 0; a < levels; a++) { //the same position on the next level is okay
+						if ((a != ol) && (m != ol)) {
+							okaymove[m][op] = 1;
+						}
+					}
+				}
+				
+			
+				}
+				
+				}
+				
+			}
+			
+				
+		
+		
+		if ((okaymove[nl][np] == 1) && (visibleteams[nl][np] == 0)) { //if the position is okay and there is no other piece in the spot
+			mcheck = 1; //move the piece
+		}
+		else {
+			mcheck = 0; //don't move the piece
+		}
+	
+		
+	
+		if (mcheck == 1) {
+		visibleteams[nl][np] = visibleteams[ol][op]; //add count to new location
+		visibleteams[ol][op] =  0; //remove count from previous location
+		}
+	
+		mpreturn.setmovestat(mcheck); //set whether move is legal - 1 yes, 0 no
+		mpreturn.setupdatedboard(visibleteams); //set updated board
+	
+	return mpreturn;	
+	}
+	
+	
 	public static void main(String args[]){
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run(){

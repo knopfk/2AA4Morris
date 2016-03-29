@@ -179,7 +179,8 @@ public class GameDisplay extends JFrame implements ActionListener {
 								piecePanel.setLabel("Moving Phase: Red Piece Selected");
 								prevDisk[0] = i; prevDisk[1] = j;
 							}
-							else if(gamePanel.getVisibleTeams(i,j) == 0 && prevDisk[0] != -1){
+							else if(gamePanel.getVisibleTeams(i,j) == 0 && prevDisk[0] != -1 &&prevDisk[1] != -1){
+								if(GameControl.movepiece(prevDisk[0],prevDisk[1],i,j,gamePanel.getVisibleTeams()).getmovestat() == 1){
 								gamePanel.setVisibleTeams(i, j, 1);
 								gamePanel.setVisibleTeams(prevDisk[0], prevDisk[1], 0);
 								prevDisk[0] = -1;
@@ -195,6 +196,7 @@ public class GameDisplay extends JFrame implements ActionListener {
 									redTake = true; // it is red's turn
 									piecePanel.setLabel("Moving Phase: Blue's Turn");
 								}
+								}
 							}
 						}
 						else if(gamePanel.getShapeArray()[i][j].contains(e.getPoint()) && redTake == true){//if the piece was clicked and it is red's turn
@@ -203,6 +205,7 @@ public class GameDisplay extends JFrame implements ActionListener {
 								piecePanel.setLabel("Moving Phase: Blue Piece Selected");
 							}
 							else if(gamePanel.getVisibleTeams(i,j) == 0 && prevDisk[0] != -1){
+								if(GameControl.movepiece(prevDisk[0],prevDisk[1],i,j,gamePanel.getVisibleTeams()).getmovestat() == 1){
 								gamePanel.setVisibleTeams(i, j, 2);
 								gamePanel.setVisibleTeams(prevDisk[0], prevDisk[1], 0);
 								prevDisk[0] = -1;
@@ -217,6 +220,7 @@ public class GameDisplay extends JFrame implements ActionListener {
 									blueTake = true; // it is no longer red's turn
 									redTake = false; // it is blue's turn
 								}
+							}
 							}
 						}
 					}
@@ -443,18 +447,18 @@ public class GameDisplay extends JFrame implements ActionListener {
 				return true;
 			}
 		}
-		if(j == 5 || j == 6 || j == 7){
-			if(gamePanel.getVisibleTeams(i,5) == colour && gamePanel.getVisibleTeams(i,6) == colour && gamePanel.getVisibleTeams(i,7) == colour){
+		if(j == 4 || j == 5 || j == 6){
+			if(gamePanel.getVisibleTeams(i,4) == colour && gamePanel.getVisibleTeams(i,5) == colour && gamePanel.getVisibleTeams(i,6) == colour){
 				return true;
 			}
 		}
-		if(j == 0 || j == 3 || j == 5){
-			if(gamePanel.getVisibleTeams(i,0) == colour && gamePanel.getVisibleTeams(i,3) == colour && gamePanel.getVisibleTeams(i,5) == colour){
+		if(j == 0 || j == 7 || j == 6){
+			if(gamePanel.getVisibleTeams(i,0) == colour && gamePanel.getVisibleTeams(i,7) == colour && gamePanel.getVisibleTeams(i,6) == colour){
 				return true;
 			}
 		}
-		if(j == 2 || j == 4 || j == 7){
-			if(gamePanel.getVisibleTeams(i,2) == colour && gamePanel.getVisibleTeams(i,4) == colour && gamePanel.getVisibleTeams(i,7) == colour){
+		if(j == 2 || j == 3 || j == 4){
+			if(gamePanel.getVisibleTeams(i,2) == colour && gamePanel.getVisibleTeams(i,3) == colour && gamePanel.getVisibleTeams(i,4) == colour){
 				return true;
 			}
 		}

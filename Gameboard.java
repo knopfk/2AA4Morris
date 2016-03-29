@@ -43,6 +43,9 @@ class GameBoard extends JPanel {
 	public int getVisibleTeams(int i, int j){
 		return visibleTeams[i][j];
 	}
+	public int[][] getVisibleTeams(){
+		return visibleTeams;
+	}
 	
 	/* GameBoard constructor
 	 * Builds and maintains the gameboard display
@@ -72,12 +75,12 @@ class GameBoard extends JPanel {
 			shapeArray[i][1] = new Ellipse2D.Double((sizingArray[i][0] + sizingArray[i][2])*(width/9), sizingArray[i][0]*(height/9),height/10, width/10);
 			shapeArray[i][2] = new Ellipse2D.Double(sizingArray[i][1]*(width/9), sizingArray[i][0]*(height/9),height/10, width/10);
 			
-			shapeArray[i][3] = new Ellipse2D.Double(sizingArray[i][0]*(width/9), (sizingArray[i][0] + sizingArray[i][2])*(height/9),height/10, width/10);
-			shapeArray[i][4] = new Ellipse2D.Double(sizingArray[i][1]*(width/9), (sizingArray[i][0] + sizingArray[i][2])*(height/9),height/10, width/10);
+			shapeArray[i][7] = new Ellipse2D.Double(sizingArray[i][0]*(width/9), (sizingArray[i][0] + sizingArray[i][2])*(height/9),height/10, width/10);
+			shapeArray[i][3] = new Ellipse2D.Double(sizingArray[i][1]*(width/9), (sizingArray[i][0] + sizingArray[i][2])*(height/9),height/10, width/10);
 			
-			shapeArray[i][5] = new Ellipse2D.Double(sizingArray[i][0]*(width/9), sizingArray[i][1]*(height/9),height/10, width/10);
-			shapeArray[i][6] = new Ellipse2D.Double((sizingArray[i][0] + sizingArray[i][2])*(width/9), sizingArray[i][1]*(height/9),height/10, width/10);
-			shapeArray[i][7] = new Ellipse2D.Double(sizingArray[i][1]*(width/9), sizingArray[i][1]*(height/9),height/10, width/10);
+			shapeArray[i][6] = new Ellipse2D.Double(sizingArray[i][0]*(width/9), sizingArray[i][1]*(height/9),height/10, width/10);
+			shapeArray[i][5] = new Ellipse2D.Double((sizingArray[i][0] + sizingArray[i][2])*(width/9), sizingArray[i][1]*(height/9),height/10, width/10);
+			shapeArray[i][4] = new Ellipse2D.Double(sizingArray[i][1]*(width/9), sizingArray[i][1]*(height/9),height/10, width/10);
 			
 		}
 	}
