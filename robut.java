@@ -222,13 +222,9 @@ public abstract class robut {
 
 	// returns a random open spot adjacent to a piece of a certain colour
 		private static int[] randomAdjacent(int[][] visibleTeams, int search){
-//			boolean check = true;
-//			int[] target = {0};
-			//		while (check){ // has a spot been found yet? 
-			//			int[] temp = random(visibleTeams, search);	//	chooses a random piece of a certain colour
-			for (int i = 0; i < visibleTeams.length; i++){
+			for (int i = 0; i < visibleTeams.length; i++){	// checks through every spot on the board
 				for (int j = 0; j < visibleTeams[i].length; j++){
-					if (visibleTeams[i][j] == search){
+					if (visibleTeams[i][j] == search){	// if there is a piece of the desired colour
 						int[][] adj = checkAdjacent(visibleTeams, 0, i, j);	// checks for open spots next to the piece
 						for (int n = 0; n < adj.length; n++){	// iterates through the array of spots to find on open one
 							if (adj[n][0] != -1){
