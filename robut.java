@@ -221,21 +221,26 @@ public abstract class robut {
 	}
 
 	// returns a random open spot adjacent to a piece of a certain colour
-	private static int[] randomAdjacent(int[][] visibleTeams, int search){
-		boolean check = true;
-		int[] target = {0};
-		while (check){ // has a spot been found yet?
-			int[] temp = random(visibleTeams, search);	//	chooses a random piece of a certain colour
-			int[][] adj = checkAdjacent(visibleTeams, 0, temp[0], temp[1]);	// checks for open spots next to the piece
-			for (int i = 0; i < adj.length; i++){	// iterates through the array of spots to find on open one
-				if (adj[i][0] != -1){
-					target = new int[] {adj[i][0], adj[i][1]};
-					check = false;	// a spot has been found!
+		private static int[] randomAdjacent(int[][] visibleTeams, int search){
+//			boolean check = true;
+//			int[] target = {0};
+			//		while (check){ // has a spot been found yet? 
+			//			int[] temp = random(visibleTeams, search);	//	chooses a random piece of a certain colour
+			for (int i = 0; i < visibleTeams.length; i++){
+				for (int j = 0; j < visibleTeams[i].length; j++){
+					if (visibleTeams[i][j] == search){
+						int[][] adj = checkAdjacent(visibleTeams, 0, i, j);	// checks for open spots next to the piece
+						for (int n = 0; n < adj.length; n++){	// iterates through the array of spots to find on open one
+							if (adj[n][0] != -1){
+								return new int[] {adj[n][0], adj[n][1]};
+//								check = false;	// a spot has been found!
+							}
+						}
+					}
 				}
 			}
+			return null;
 		}
-		return target;
-	}
 
 	// Checks for mills, then returns a random location of one of the pieces in the mill to be deleted
 	private static int[][] findMill(int[][] visibleTeams, int notColour){
