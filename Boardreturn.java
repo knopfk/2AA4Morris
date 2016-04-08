@@ -5,7 +5,7 @@ public class Boardreturn {
 	private int movestat;
 	
 	
-	public void setupdatedboard(int[][] boardchange) {
+	public void setokayboard(int[][] boardchange) {
 		updatedboard = boardchange;
 	}
 	
@@ -13,7 +13,7 @@ public class Boardreturn {
 		movestat = status;
 	}
 	
-	public int[][] getupdatedboard(){
+	public int[][] getokayboard(){
 		return updatedboard;
 	}
 	

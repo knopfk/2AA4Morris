@@ -27,7 +27,7 @@ class GameBoard extends JPanel {
 	//private boolean blueTake; //is blue the active player
 
 	
-	private int [][] sizingArray = new int[2][3]; //array to keep track of the size of the board in terms of Mans (3, 6, 9, etc), used for scaling
+	private int [][] sizingArray = {{0,8,4},{2,6,2}}; //array to keep track of the size of the board in terms of Mans (3, 6, 9, etc), used for scaling
 	private double height = 500; //predetermined height, should receive from controller
 	private double width = 500; //predetermined width, should receive from controller
 	//private double size = 100; //predetermined size, should receive from controller
@@ -51,22 +51,25 @@ class GameBoard extends JPanel {
 	 * Builds and maintains the gameboard display
 	 * 
 	 */
-	public GameBoard() {
+	public GameBoard(GameData gameData) {
 
 		//intialize the sizeArray for the gameboard to values that reflect 6 Man Morris
 		// other values would be able to be easily added if there was expansion to larger game boards
-		sizingArray[0][0] = 0;
-		sizingArray[0][1] = 8;
-		sizingArray[0][2] = 4;
-		sizingArray[1][0] = 2;
-		sizingArray[1][1] = 6;
-		sizingArray[1][2] = 2;
-		
+	//	sizingArray[0][0] = 0;
+	//	sizingArray[0][1] = 8;
+	//	sizingArray[0][2] = 4;
+	//	sizingArray[1][0] = 2;
+	//	sizingArray[1][1] = 6;
+	//	sizingArray[1][2] = 2;
+
 		//initialize all disks to empty, should receive this from controller
-		for(int i = 0; i < 8; i ++){
-			visibleTeams[0][i] = 0;
-			visibleTeams[1][i] = 0;
-		}
+	//	for(int i = 0; i < 8; i ++){
+	//		gameData.setVisibleTeams(0,i,0);
+	//		gameData.setVisibleTeams(1,i,0);
+		//	visibleTeams[0][i] = 0;
+		//	visibleTeams[1][i] = 0;
+	//	}
+		visibleTeams = gameData.getVisibleTeams();
 		
 		//set the location on the game board for each disk location element
 		// using the scaling array to determine the position of each piece on the board
