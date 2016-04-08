@@ -1,6 +1,6 @@
 import java.util.concurrent.ThreadLocalRandom;
 
-public class robut {
+public abstract class robut {
 
 	/**
 	 * 
@@ -122,33 +122,33 @@ public class robut {
 		int[][] nearMills = new int[8][]; // collector array for near mills
 		int check = 0; // adds near mills to the next open array spot
 		for (int i = 0; i < 2; i++) {	// iterates through each near mill location on each row to check for near mills
-			if (visibleTeams[i][0] == colour && visibleTeams[i][1] == colour && visibleTeams[i][2] == 0)
-				nearMills[check++] = new int[] {i, nearMillRandom(2,0,1,action)};
+			if (visibleTeams[i][0] == colour && visibleTeams[i][1] == colour && visibleTeams[i][2] == 0) // if near mill exists at location
+				nearMills[check++] = new int[] {i, nearMillRandom(2,0,1,action), 0,1};						// add it to array
 			else if (visibleTeams[i][0] == colour && visibleTeams[i][1] == 0 && visibleTeams[i][2] == colour)
-				nearMills[check++] = new int[] {i, nearMillRandom(1,0,2,action)};
+				nearMills[check++] = new int[] {i, nearMillRandom(1,0,2,action), 0,2};
 			else if (visibleTeams[i][0] == 0 && visibleTeams[i][1] == colour && visibleTeams[i][2] == colour)
-				nearMills[check++] = new int[] {i, nearMillRandom(0,2,1,action)};
+				nearMills[check++] = new int[] {i, nearMillRandom(0,2,1,action), 1,2};
 
 			if (visibleTeams[i][4] == colour && visibleTeams[i][5] == colour && visibleTeams[i][6] == 0)
-				nearMills[check++] = new int[] {i, nearMillRandom(6,5,4,action)};
+				nearMills[check++] = new int[] {i, nearMillRandom(6,5,4,action), 4,5};
 			else if (visibleTeams[i][4] == colour && visibleTeams[i][5] == 0 && visibleTeams[i][6] == colour)
-				nearMills[check++] = new int[] {i, nearMillRandom(5,6,4,action)};
+				nearMills[check++] = new int[] {i, nearMillRandom(5,6,4,action), 4, 6};
 			else if (visibleTeams[i][4] == 0 && visibleTeams[i][5] == colour && visibleTeams[i][6] == colour)
-				nearMills[check++] = new int[] {i, nearMillRandom(4,6,5,action)};
+				nearMills[check++] = new int[] {i, nearMillRandom(4,6,5,action), 5,6};
 
 			if (visibleTeams[i][0] == colour && visibleTeams[i][7] == colour && visibleTeams[i][6] == 0)
-				nearMills[check++] = new int[] {i, nearMillRandom(6,0,7,action)};
+				nearMills[check++] = new int[] {i, nearMillRandom(6,0,7,action) ,7,0};
 			else if (visibleTeams[i][0] == colour && visibleTeams[i][7] == 0 && visibleTeams[i][6] == colour)
-				nearMills[check++] = new int[] {i, nearMillRandom(7,0,6,action)};
+				nearMills[check++] = new int[] {i, nearMillRandom(7,0,6,action), 0,6};
 			else if (visibleTeams[i][0] == 0 && visibleTeams[i][7] == colour && visibleTeams[i][6] == colour)
-				nearMills[check++] = new int[] {i, nearMillRandom(0,7,6,action)};
+				nearMills[check++] = new int[] {i, nearMillRandom(0,7,6,action), 7,6};
 
 			if (visibleTeams[i][2] == colour && visibleTeams[i][3] == colour && visibleTeams[i][4] == 0)
-				nearMills[check++] = new int[] {i, nearMillRandom(4,3,2,action)};
+				nearMills[check++] = new int[] {i, nearMillRandom(4,3,2,action),2,3};
 			else if (visibleTeams[i][3] == colour && visibleTeams[i][3] == 0 && visibleTeams[i][4] == colour)
-				nearMills[check++] = new int[] {i, nearMillRandom(3,4,2,action)};
+				nearMills[check++] = new int[] {i, nearMillRandom(3,4,2,action),2,4};
 			else if (visibleTeams[i][2] == 0 && visibleTeams[i][3] == colour && visibleTeams[i][4] == colour)
-				nearMills[check++] = new int[] {i, nearMillRandom(2,4,3,action)};
+				nearMills[check++] = new int[] {i, nearMillRandom(2,4,3,action),3,4};
 		}
 		return nearMills;
 	}
@@ -275,8 +275,8 @@ public class robut {
 				if (nearMills[i] != null){ 
 					int[][] adjacent = checkAdjacent(visibleTeams, search, nearMills[i][0], nearMills[i][1]);
 					for (int k = 0; k < adjacent.length; k++){
-						if (adjacent[k][0] != -1 && adjacent[k][1] != nearMills[i][2] && adjacent[k][1] != nearMills[i][3]){
-							target = new int[] {adjacent[k][0], adjacent[k][1], nearMills[i][0], nearMills[i][1]};
+						if (adjacent[k][0] != -1 && adjacent[k][1] != nearMills[i][2] && adjacent[k][1] != nearMills[i][3]){ // if there is a piece and it is not part of the near mill that piece
+							target = new int[] {adjacent[k][0], adjacent[k][1], nearMills[i][0], nearMills[i][1]};				// becomes the target
 						}
 					}
 				}
