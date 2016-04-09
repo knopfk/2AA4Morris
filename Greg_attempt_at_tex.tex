@@ -135,142 +135,83 @@
 		
 	\subsection{MID}
 	\begin{itemize}
-		\item GameDisplay.java \\
+		\item robut.java \\
 		\underline{Variables}
 		\begin{itemize}
-			\item private static boolean isButtonNewGame : A boolean to show keep track if this is a new game.
-			\item private static boolean isButtonTake : A boolean to show if a button is selected.
-			\item private static boolean isButtonRecieve : A boolean to show if a button is received
-			\item private boolean redTake : A boolean to show if it is Red's turn.
-			\item private boolean blueTake : A boolean to show if it is Blue's turn.
-			\item private PiecePanel piecePanel : A PiecePanel class to represent the pieces panel section of the display.
-			\item private static GameBoard gamePanel : A GameBoard class to represent the game board section of the display.
-			\item private int play1count : An integer variable representing the amount of pieces Red has left to play.
-			\item private int play2count : An integer variable representing the amount of pieces Blue has left to play.
-			\item private int levels : An integer representing the amount of levels in the game. For 6 Man's Morris this is 2.
-			\item private int places : An integer representing the amount of places in one level of the board. For 6 Man's Morris this is 8.
-			\item private int[][] current : A 2D integer array representing the amount of pieces currently on a space of the board. Should only allow one piece on each space
-			\item private int currentState : An integer variable representing the current state of the game. Should only be between 0 and 4.
-			\item private int previousState :An integer variable representing the previous state of the game. Should only be between 0 and 4.
-			\item private int [] prevDisk : A 1D integer array representing the location of the piece that will be moved.
+			\item None
 		\end{itemize}
 		\underline{Access Programs}
 		\begin{itemize}
-			\item public GameDisplay(String title): A constructor for the GameDisplay, that takes a String for the title of the game.
-			\item public GameDisplay() : A generic constructor for the Game Display, calls GameDisplay(String title) to construct the game display.
-			\item public void actionPerformed(ActionEvent e) : A public method representing the actions taken when a button is pressed on the board.
+			\item public static int[] place(int[][] visibleTeams, int colour, int added) : A public method taking 3 inputs: visibleTeams, an integer array of the setup of the board; colour, an integer of what which team’s piece is being placed; added, an integer of the number of pieces added to the board. Determines and returns a location on the board where a new piece should be placed.
+			\item public static int[] move(int[][] visibleTeams, int colour) : A public method taking 2 inputs: visibleTeams, an integer array of the setup of the board; colour, an integer of what which team’s piece is being placed. Determines and returns a set of locations on the board of what piece should be moved and where it should be moved to.
+			\item public static int[] mill(int[][] visibleTeams, int colour, int added) : A public method taking 2 inputs: visibleTeams, an integer array of the setup of the board; colour, an integer of what which team’s piece is being placed. Determines and returns the location of a piece on the board that should be removed.
 		\end{itemize}
 		\underline{Private Programs}
 		\begin{itemize}
-			\item private void state0() : A private method to be called when the game transitions to the first state (intial state).
-			\item private void state1() :A private method to be called when the game transitions to the second state (piece placing).
-			\item private void state2() :A private method to be called when the game transitions to the third state (piece moving).
-			\item private void state3() :A private method to be called when the game transitions to the fourth state (milling).
-			\item private void clearBoard() : A private method that is called that restarts the board, and returns to state0. 
-			\item private boolean checkMill(int i,int j,int colour): A private method that checks if a mill has been achieved, returns a boolean showing if there is a mill.
-			\item private void saveGame() : A private method that records the game data to a .txt file, so that it may be recovered later.
-			\item private void loadGame() : A private method that load the game data from a .txt file.		
+			\item private static int[] random(int[][] visibleTeams, int search) : A private method that searches for a random piece of a certain colour on the board and returns its location.
+			\item private static in[][] nearMill(int[][] visibleTeams, int colour, int action) : A private method that searches for any near mills of a certain colour and either returns and array of integer arrays of either the empty spots of near mills to be completed or pieces in near mills to be removed.
+			\item private static int nearMillRandom(int empty, int pieceA, int pieceB, int action) : A private method that, based on the value of action, either returns the location of the empty spot of a near mill or one of the two pieces in a near mill.
+			\item private static int[][] checkAdjacent(int[][] visibleTeams, int adj, int i, int j) : A private method that, given a location and a type to search for (a piece of a certain colour or an empty spot), will return an array of integer arrays of the locations of the adjacent pieces of that type.
+			\item private static int[][] checkAdjacent(int[][] visibleTeams, int adj, int i, int j) : A private method that, given a location and a type to search for (a piece of a certain colour or an empty spot), will return an array of integer arrays of the locations of the adjacent pieces of that type.
+			\item private static int[][] findMill(int[][] visibleTeams, int notColour) : A private method that searches for any mills that a player has and returns one piece from each mill to be removed.
+			\item private static int findMillRandom(int pieceA, int pieceB, int pieceC) : A private method that, given a mill, randomly returns one of the three pieces to be removed.
+			\item private static int[] nearbyPiece(int[][] visibleTeams, int[][] nearMills, int search) : A private method that, given an array of locations of near mills, will search for and return the location of a nearby piece of a certain colour to block or complete the near mill, if one exists.
 		\end{itemize}
-		\item GameBoard.java \\
+		\item GameData.java \\
 		\underline{Variables}
 		\begin{itemize}
-			\item private Shape[][] shapeArray : A 2D Shape array containing the shapes at each of the nodes on the game board. 
-			\item private int[][] visibleTeams : A 2D integer array containing the values for the currrent controllers of a node on the gameboard (0-empty,1-red,2-blue).
-			\item private int [][] sizingArray :A 2D integer array containing the values of the sizes of nodes on the game board. Keeps track of the scaling of each level.
-			\item private double height : A private integer variable representing the height of the gameboard.
-			\item private double width : A private integer variable representing the width of the game board.
+			\item private int[][] visibleTeams : An integer array of the current state of each piece.
+			\item private boolean redTake : A boolean to mark whether or not red is the active player. If true, red is active. If not, red is not active.
+			\item private boolean blueTake : A boolean to mark whether or not blue is the active player. If true, blue is active. If not, blue is not active.
+			\item private boolean first : A boolean that represents which player goes first.
+			\item private int currentState : An integer to mark which state the game is currently in.
+			\item private int previousState : An integer to mark which state the game was in before it became its current state.
+			\item private int play1count : The number of active pieces for player 1.
+			\item private int play2count : The number of active pieces for player 2.
+			\item private int play1removed : The number of pieces of player 1’s that have been removed.
+			\item private int play2removed : The number of pieces of player 2’s that have been removed.
+			\item private int previousMoves : The number of moves that have been made in the game.
+			\item private final int allowable : The maximum number of pieces each player is allowed to have.
+			
 		\end{itemize}
 		\underline{Access Programs}
 		\begin{itemize}
-			\item public Shape[][] getShapeArray() : A public method allowing another class access to the values of the shapeArray variable array. Allows another class to see the shapes of each element on the game board.
-			\item public void setVisibleTeams(int i, int j, int value) : A public method taking 3 integer inputs: i, the level; j, the position; and value, the value. This method the ith,jth element of the visible teams array to the value of value. Allows another class to change the elements of visibleTeams.
-			\item public int getVisibleTeams(int i, int j) : A public method taking 2 integer inputs: i,the level; and j: the position. Returns the value of visibleTeams at the [i][j] position. Allows other classes to read the values of the visibleTeams array.
-			\item public GameBoard() : A public constructor method that allows another class to create an instance of the GameBoard class.
+			\item public GameData() : A constructor for GameData class. Allows another class to create Game Data for a new game.
+			\item public int[][] getVisibleTeams() : A getter method for the locations of the pieces on the game board.
+			\item public void setVisibleTeams(int x, int y, int value) : A setter method for an individual value of visibleTeams. Allows a piece to be added to the gameboard.
+			\item public void setVisibleTeams(int[][] newTeams) : A setter method for the whole of visibleTeams. Allows for an old game to be loaded to the game board.
+			\item public void incrementPlay1count() : Increments the number of pieces played by player 1 by 1.
+			\item public void decreasePlay1count() : Decrements the number of pieces played by player 1 by 1.
+			\item public void setPlay1count(int count) : A setter method for the number of pieces played by player 1. Allows for an old game’s count of player 1’s pieces to be loaded.
+			\item public int getPlay1count() : A getter method for the number of pieces played by player 1.
+			\item public int getPlay1removed() : A getter method for the number of player 1’s pieces that were removed.
+			\item public void incrementPlay2count() : Increments the number of pieces played by player 2 by 1.
+			\item public void decreasePlay2count() : Decrements the number of pieces played by player 2 by 1.
+			\item public void setPlay2count(int count) : A setter method for the number of pieces played by player 2. Allows for an old game’s count of player 2’s pieces to be loaded.
+			\item public int getPlay2count() : A getter method for the number of pieces played by player 2.
+			\item public int getPlay2removed() : A getter method for the number of player 2’s pieces that were removed.
+			\item public void setRedTake(bolean value) : A setter method for whether or not red can take one of blue’s pieces.
+			\item public Boolean getRedTake() : A getter method for whether or not red can take one of blue’s pieces.
+			\item public void setBlueTake(bolean value) : A setter method for whether or not blue can take one of red’s pieces.
+			\item public Boolean getBlueTake() : A getter method for whether or not blue can take one of red’s pieces.
+			\item public void incrementTake() : A method that switches which player is active.
+			\item public void setFirst(boolean bool) : A setter method that sets which player moves first.
+			\item public boolean getFirst() : A getter method that returns which player moves first.
+			\item public void setState(int state) : A setter method that sets the previous state to the current state and sets the current state to the new state.
+			\item public int getCurrentState() : A getter method that returns the current state of the game.
+			\item public int getPreviousState() : A getter method that returns the previous state of the game.
+			\item public int getPreviousMoves() : A getter method that returns the number of moves previously made.
+			\item public void resetPreviousMoves() : A method that sets the number of previous moves to 0.
+			\item public void incrementPreviousMoves() : A method that increases the number of previous moves by 1.
+			\item public void loadGame() : A method that loads a game state from a txt file.
 			
 		\end{itemize}
 		\underline{Private Programs}
 		\begin{itemize}
-			\item protected void paintComponent(Graphics g) : An overrided method to describe how each element of game board will be coloured. 
-	
+			\item None
 		\end{itemize}
 		
-		\item PiecePanel.java \\
-		\underline{Variables}
-		\begin{itemize}
-			\item private Shape redCircle : A private shape variable representing the shape of the red disk to be placed.
-			\item private Shape blueCircle:A private shape variable representing the shape of the blue disk to be placed.
-			\item private boolean blueTake: A private boolean variable representing if it is currently blue's turn.
-			\item private boolean redTake:A private boolean variable representing if it is currently red's turn.
-			\item private static boolean isButtonAdded:A private boolean representing if a button is to be added.
-			\item private static boolean redAddedLast: A private boolean representing if red was added last.
-			\item private static boolean blueAddedLast: A private boolean representing if blue was added last.
-			\item private JLabel label1: A Jlabel that contains the message to be displayed to the screen.
-			\item private JLabel label2: A Jlabel that contains the amount of red pieces remaining to be placed.
-			\item private JLabel label3: A Jlabel that contains the amount of blue pieces remaining to be placed.
-		\end{itemize}
-		\underline{Access Programs}
-		\begin{itemize}
-				\item public Shape getRedCircle() : returns the value of RedCircle.
-				\item public Shape getBlueCircle() : returns the value of BlueCircle.
-				\item public void setLabel(String newText) : Allows another class to set the String message to be displayed to the screen.
-				\item public void setRedCount(String newText) : Allows another class to set the amount of remaining red disks to be placed.
-				\item public void setBlueCount(String newText) : Allows another class to set the amount of remaining blue disks to be placed.
-				\item public PiecePanel() : A constructor that allows another class to create an instance of the PiecePanel class.
-		\end{itemize}
-		\underline{Private Programs}
-		\begin{itemize}
-			\item protected void paintComponent(Graphics g) : An overrided method to describe how each element of piece panel will be coloured. 
-		\end{itemize}
-	\item GameControl.java \\
-	\underline{Variables}
-	\begin{itemize}
-	\item private int levels : A variable that holds number of levels on board
-	\item private int places : A variable that holds number of places in each level 
-	\item private int[][] current :A 2D int array which will hold number of pieces in each position 
-	\item private String[][] teams: A 2D String array which will hold stack of players in each position
-	\item private int[][] visibleteams : A 2D int array which holds top piece in each position 
-	\item private int play1count :An int that holds number of active pieces for player1
-	\item private int play2count :An int that holds number of active pieces for player2
-	\item private int allowable :An int that holds number of pieces each player is allowed to have
-	\item private boolean turn : A boolean that holds value determining which players turn it is
-	\item private boolean first : A boolean that holds which player goes first
-	
-
-\end{itemize}
-\underline{Access Programs}
-\begin{itemize}
-	\item public boolean startboard() : Sets up the array to keep track of piece positions on board, generates random boolean to determine which player goes first. Returns boolean (true - player1, false - player 2)
-	\item public void newpiece(int l, int p, boolean teamnew): Adds new piece to array as long as there is no piece already in position and tracks how many pieces from each player have been added to board. Returns array of current board, and int value determining whether new piece position was legal (1 - legal).
-	\item public int[][] visibleteam() : Manipulates 'visibleteams' array to express movement of pieces on board, determines whether move is legal. Returns int value determining whether move is legal, and current array.
-	\item public static Boardreturn movepiece(int ol,int op,int nl,int np, int[][] visibleteams) : Holds values determining whether or not move/new piece placement is legal, and current array after new piece/move piece attempted. 
-	\item public static void main(String args[]) : The main function, runs the program and displays the window.
-
-\end{itemize}
-\underline{Private Programs}
-\begin{itemize}
-	\item None
-			
-\end{itemize}	
-
-	\item BoardReturn.java \\
-	\underline{Variables}
-	\begin{itemize}
-		\item private int updatedboard[][] : A variable that holds the value of the updated board.
-		\item private int movestat : An integer to represent if the move is legal.
-
-	\end{itemize}
-	\underline{Access Programs}
-	\begin{itemize}
-					\item public void setupdatedboard(int[][] boardchange): holds the current 'visibleteams' array after a move/new piece attempted 
-					\item public void setmovestat(int status) : holds int value determing whether attempted move/new piece legal
-					\item public int[][] getupdatedboard() : returns current 'visibleteams' array when called
-					\item public int getmovestat() : returns whether previous attempted newpiece/movepiece was legal
-	\end{itemize}
-	\underline{Private Programs}
-	\begin{itemize}
-		\item None
 		
-	\end{itemize}
 	
 	
 	\end{itemize}
@@ -351,7 +292,12 @@
 			\end{figure}
 	In the above relation, a class points to another that it uses.
 	The View calls the Controller, which in turn modifies the Model. In the future, the View will initially take input from the user. Then, depending on which component was clicked, will call a corresponding method in the controller. Clicking either the red or blue piece will call the newpiece method in GameControl. Clicking the check button will call checkboard(), and clicking the start button will call startboard(). These methods will then modify the model through the manipulation of arrays. \\
-	\newpage	
+	\newpage
+	\section{Computer Player AI}	
+	\indent The computer player was designed with the three states of gameplay in mind. Just as the player was implemented through parsing inputs in differing methods depending on the state of the game, the computer was implemented as an abstract class that returns inputs of where to move next depending on which state the game is in. For each state there is a corresponding function to determine what move the computer player should make: place() corresponds with state 1; move() corresponds with state 2; mill() corresponds with state 3.\\
+	The computer player was designed with the three states of gameplay in mind. Just as the player was implemented through parsing inputs in differing methods depending on the state of the game, the computer was implemented as an abstract class that returns inputs of where to move next depending on which state the game is in. For each state there is a corresponding function to determine what move the computer player should make: place() corresponds with state 1; move() corresponds with state 2; mill() corresponds with state 3.\\
+	The function move() works in a similar fashion. It begins by checking if the computer has a near mill. If it has that it continues to check for whether there is one of the computer’s pieces adjacent to the empty spot of the near mill. If that is true, then the piece is moved to complete the mill. However, if any one of those are false move() checks if the other player has a near mill. If true, it continues to check for whether one of the computer’s pieces is adjacent to the empty spot of the opponent’s near mill. If that is also true, the piece is moved to block the other player from creating a mill. If all else fails, a random piece of the computer’s is moved to a random open adjacent location.\\
+	Finally, mill()’s implementation follows that of move() and place(). It begins by checking if the opposing player has a mill and, if it does, randomly removes one of the three pieces that make up the mill. If the opponent does not have a mill, the function checks if they have a near mill instead and removes one of the pieces that makes it up, if it exists. Otherwise, mill() randomly removes one of the opponent’s pieces.\\
 	\section{Testing}
 	% A section on the testing of the software
 	%Behavoir Table
